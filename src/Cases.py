@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 
-from Utility import FromNummericDate
+from Utility import DateFrom6digitName
 
 def ParseSurvStatDay(dday):
     by_type = ["lab and clinical met","lab met, clinical not met","lab met, clinical undetermined"]
@@ -68,7 +68,7 @@ def RKI_Altersverteilung():
 
         if fn[:16] == "Altersverteilung":
             nd = fn.replace(".csv","").split("_")[1]
-            pdate = FromNummericDate(nd)
+            pdate = DateFrom6digitName(nd)
             df = pd.read_csv(directory+fn,sep=";")
             
             if pdate >= datetime.datetime(2020,11,24):
