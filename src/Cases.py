@@ -5,6 +5,7 @@ import pandas as pd
 import xarray as xr
 
 from Utility import DateFrom6digitName
+import ModelParams
 
 def ParseSurvStatDay(dday):
     by_type = ["lab and clinical met","lab met, clinical not met","lab met, clinical undetermined"]
