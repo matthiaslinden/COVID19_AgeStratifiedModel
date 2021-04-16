@@ -52,11 +52,25 @@ def main():
         else:
             files = os.listdir()
             existing_files = [f for f in files if re.match(r'%s\_[0-9]{8}.*\.csv$'%out, f)]
-            print(existing_files)
-        
-        
-    print(files)
-
+            tar = tarfile.open(tarname,"r:gz")
+            tarfiles = [t.name for t in tar]
+            addfiles = []
+            for efile in existing_files:
+                if efile not in tarfiles:
+                    print(efile)
+                    addfiles.append(efile)
+            if len(addfiles) > 0:
+                tar.extractall()
+            tar.close()
+            
+            if len(addfiles) > 0:
+                existing_files = [f for f in os.listdir() if re.match(r'%s\_[0-9]{8}.*\.csv$'%out, f)]
+                tar = tarfile.open(tarname,"w:gz")
+                print("addfiles",addfiles)
+                for afile in existing_files:
+                    tar.add(afile)
+                tar.close()
+            
     """    rname = "%s_Covid19"%(k)
         name = "%s_Covid19_%s"%(k,fstr)
         fname = name + ".csv"
