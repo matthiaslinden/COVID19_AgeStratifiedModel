@@ -1,4 +1,10 @@
 Date	since	location	number	cases	deaths
+2021-04-19	54	school	116	544	-1
+2021-04-19	54	child care	287	2307	-1
+2021-04-19	53	VOC	3271	14028	-1
+2021-04-19	53	VOC nursing home	64	398	-1
+2021-04-19	53	VOC school	86	306	-1
+2021-04-19	53	VOC child care	214	1520	-1
 2021-04-18	54	school	116	544	-1
 2021-04-18	54	child care	282	2288	-1
 2021-04-18	53	VOC	3290	13764	-1
@@ -155,7 +161,26 @@ Date	since	location	number	cases	deaths
 2021-03-24	53	VOC nursing home	36	208	-1
 2021-03-24	53	VOC school	32	149	-1
 2021-03-24	53	VOC child care	108	871	-1
-
+2021-03-23	54	school	46	283	-1
+2021-03-23	54	child care	156	1201	-1
+2021-03-23	53	VOC	1294	5762	-1
+2021-03-23	53	VOC nursing home	35	197	-1
+2021-03-23	53	VOC school	29	141	-1
+2021-03-23	53	VOC child care	96	802	-1
+2021-03-22	08	nursing home 21	171	15
+2021-03-22	38	school	362	1762	-1
+2021-03-22	38	child care	351	2432	-1
+2021-03-22	53	VOC	1216	5418	-1
+2021-03-22	53	VOC nursing home	34	186	-1
+2021-03-22	53	VOC school	27	133	-1
+2021-03-22	53	VOC child care	91	763	-1
+2021-03-21	07	nursing home 26	298	27
+2021-03-21	38	school	360	1754	-1
+2021-03-21	38	child care	349	2358	-1
+2021-03-21	53	VOC	1165	5148	-1
+2021-03-21	53	VOC nursing home	31	172	-1
+2021-03-21	53	VOC school	26	127	-1
+2021-03-21	53	VOC child care	89	707	-1
 2021-03-20	07	nursing home 26	297	27
 2021-03-20	38	school	358	1741	0
 2021-03-20	38	child care	349	2337	1
@@ -170,6 +195,13 @@ Date	since	location	number	cases	deaths
 2021-03-19	53	VOC nursing home	30	165	-1
 2021-03-19	53	VOC school	23	116	-1
 2021-03-19	53	VOC child care	89	668	-1
+2021-03-18	07	nursing home 24	288	24
+2021-03-18	38	school	355	1733	0
+2021-03-18	38	child care	343	2235	1
+2021-03-18	53	VOC	1054	4635	-1
+2021-03-18	53	VOC nursing home	30	162	-1
+2021-03-18	53	VOC school	21	113	-1
+2021-03-18	53	VOC child care	85	603	-1
 
 2021-03-15	07	nursing home 19	240	19
 2021-03-15	38	school	348	1694	0
