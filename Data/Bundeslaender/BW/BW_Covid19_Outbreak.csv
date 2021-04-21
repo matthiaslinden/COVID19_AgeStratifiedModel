@@ -1,8 +1,14 @@
 Date	since	location	number	cases	deaths
+2021-04-21	54	school	118	553	-1
+2021-04-21	54	child care	307	2402	-1
+2021-04-21	53	VOC	3580	14827	-1
+2021-04-21	53	VOC nursing home	76	421	-1
+2021-04-21	53	VOC school	88	313	-1
+2021-04-21	53	VOC child care	232	1595	-1
 2021-04-20	54	school	118	552	-1
 2021-04-20	54	child care	300	2307	-1
 2021-04-20	53	VOC	3458	14424	-1
-2021-04-20	53	VOC nursing home	66	511	-1
+2021-04-20	53	VOC nursing home	66	411	-1
 2021-04-20	53	VOC school	87	311	-1
 2021-04-20	53	VOC child care	226	1572	-1
 2021-04-19	54	school	116	544	-1
