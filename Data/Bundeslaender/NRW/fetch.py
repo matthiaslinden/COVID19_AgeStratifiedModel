@@ -9,7 +9,7 @@ import tarfile
 import wget
 import re
 
-regions = {"NRW":5,"Koeln":5315,"Heinsberg":5370,"Siegen-W":5970,"Muenster":5515,"Bonn":5314,"Dortmund":5913,"Duisburg":5112,"Duesseldorf":5111,"Essen":5113,"Recklinghausen":5562,"Rhein-Sieg":5382,"Aachen":5334,"Wuppertal":5124,"Minden":5770}
+regions = {"NRW":5,"Koeln":5315,"Heinsberg":5370,"Siegen-W":5970,"Muenster":5515,"Bonn":5314,"Dortmund":5913,"Duisburg":5112,"Duesseldorf":5111,"Essen":5113,"Recklinghausen":5562,"Rhein-Sieg":5382,"Aachen":5334,"Wuppertal":5124,"Minden":5770,"Krefeld":5114,"Bielefeld":5711}
 
 sdir = "https://www.lzg.nrw.de/covid19/daten/"
 
@@ -45,7 +45,7 @@ def main():
             tar = tarfile.open(tarname,"r:gz")
             tarfiles = [t.name for t in tar]
             addfiles = []
-            for efile in existing_files:
+            for efile in reversed(sorted(existing_files)):
                 if efile not in tarfiles:
                     print(efile)
                     addfiles.append(efile)
