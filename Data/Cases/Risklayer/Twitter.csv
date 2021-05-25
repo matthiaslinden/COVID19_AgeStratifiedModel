@@ -1,5 +1,8 @@
 date	hospitalized "hospitalized report delta" 	"quarantined k"	"quarantined report delta k"	comment
-2021-05-21	111609	-510	347.1	-6.4
+2021-05-24	-	-	321.6	-11.6
+2021-05-23	10931	-253	333.2	-7.6
+2021-05-22	11184	-425	340.8	-6.3
+2021-05-21	11609	-510	347.1	-6.4
 
 2021-05-17	13699	-599	414.9	-27.3	"date-created, ~22:00 of date"
 2021-05-16	14298	-222	442.2	-9
