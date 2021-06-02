@@ -14,24 +14,16 @@ regions = {"NRW":5,"Koeln":5315,"Heinsberg":5370,"Siegen-W":5970,"Muenster":5515
 sdir = "https://www.lzg.nrw.de/covid19/daten/"
 
 
-def fetch(d):
-    files = os.listdir()
-    for i,ft in enumerate(["_todesfalle","_faelle_alter_geschlecht","_faelle_alter_geschlecht_tote"]):
-        f = d+ft+".csv"
-        if f not in files:# and not (d[:4] == "2020" and i == 0):
-            url = sdir+f
-            wget.download(url)
-        
-def main():
+def fetch(ft):
     today = datetime.date.today()
     fstr = "%d%02d%02d"%(today.year,today.month,today.day)
     files = os.listdir()
     for k,v in regions.items():
-        rname = "%s_Covid19"%(k)
-        name = "%s_Covid19_%s"%(k,fstr)
+        rname = "%s_Covid19%s"%(k,ft)
+        name = "%s_Covid19%s_%s"%(k,ft,fstr)
         fname = name + ".csv"
         if fname not in files:
-            dname = wget.download(sdir+"covid19_%d.csv"%v)
+            dname = wget.download(sdir+"covid19%s_%d.csv"%(ft,v))
             os.rename(dname,fname)
         tarname = rname+".tar.gz"
         if tarname not in files:
@@ -62,4 +54,5 @@ def main():
                 
         
 if __name__ == "__main__":
-    main()
+	for i,ft in enumerate(["","_zeitreihe","_alter_geschlecht","_alter"]):
+		fetch(ft)
