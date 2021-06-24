@@ -1,6 +1,9 @@
 import numpy as np
 import xarray as xr
 import pandas as pd
+import datetime
+
+from collections import OrderedDict
 
 import theano
 import theano.tensor as tt
@@ -81,7 +84,8 @@ def IndexSumToMatch(X,iX,iC,dims,axis,sum_dir="skip"):
             O = tt.inc_subtensor(O[slice_blueprint],xsum)
             
     return O
-    
+
+
 """
 ModelParams keeps track of coordinate-ranges for Model-internal datasets
 
@@ -108,11 +112,10 @@ class ModelParams(object):
     def Overlap(self):
         pass
 
-class ModelParam(object):
-    """ Everything is a parameter in a bayesian model """
-    def __init__(self,name,coords,param,is_variable=True):
-        
-        self.name = name
+class DimParam(object):
+    """ only works if variable is a theano object 
+    mimics some of xarray's functionallity wrapping theano shared_variables"""
+    def __init__(self,coords,param):
         self.coords = coords
         self.param = param
         
@@ -121,6 +124,127 @@ class ModelParam(object):
         
     def DimIndex(self,dim_name):
         return self.Dims().index(dim_name)
+        
+    def AsModelParam(self,name):
+        return ModelParam(name,self.coords,self.param)
+        
+#    def _SingleOutSlice(self,index):
+        
+        
+    def Sel(self,**kwargs):
+        print(kwargs)
+        
+        coords = OrderedDict()
+        index_array = []
+        for i,k in enumerate(self.coords.keys()):
+            if k in kwargs.keys():
+                v = kwargs[k]
+                print(v)
+            else:
+                index_array.append(slice(None))
+                coords[k] = self.coords[k]
+                
+                
+        
+        index_array = [slice(None)]*(first_index)
+        index_array
+    
+    def iSel(self,axes):
+        pass
+    
+    def Sum(self,axes):
+        """ Sum the parameter along supplied axes.  """
+        coords = OrderedDict()
+        if type(axes) == list:
+            index_array = []
+            for i,k in enumerate(self.coords.keys()):
+                if k in axes:
+                    index_array.append(i)
+                else:
+                    coords[k] = self.coords[k]
+            sparam = tt.sum(self.param,index_array)
+        else:
+            index = self.DimIndex(axes)
+            sparam = tt.sum(self.param,index)
+            coords = self.coords.copy()
+            coords.pop(axes)
+        return DimParam(coords,sparam)
+        
+    def __str__(self):
+        s = "DimParam dims=%d"%(len(self.coords))
+        for k,v in self.coords.items():
+            s += "\n\t%s n=%d %s ... %s"%(k,len(v),v[0],v[-1])
+        return s
+        
+    def RollByCoord(self,base_coord,offset_coord,unroll=False):
+        """ Align data along base_coord axis by shifting entries along base_coord axis by offset_coord value.
+            The output-tensor is extended by max(offset) along base_coord-axis
+        """
+        rdir = 1 if unroll == False else -1 # Roll direction
+        base,offset = self.coords[base_coord],self.coords[offset_coord]
+        min_roll,max_roll = min(offset),max(offset)
+        nroll = max_roll-min_roll
+        base_prop,offset_prop = IndexProperties(base), IndexProperties(offset)
+        
+        if base_prop["continous"] == True:
+            # Prepare index-slice
+            index = self.DimIndex(base_coord)
+            index_slice = []
+            roll_slice = slice(min_roll,max_roll)
+            post_roll_slice = []
+            for i in range(index):
+                index_slice.append(slice(None))
+                post_roll_slice.append(slice(None))
+            index_slice.append(0)
+            post_roll_slice.append(roll_slice)
+            for i in range(index+1,len(self.coords)):
+                index_slice.append(slice(None))
+                post_roll_slice.append(slice(None))
+            # Prepare offset-slice
+            offset_index = self.DimIndex(offset_coord)
+            offset_slice = []
+            for i in range(offset_index):
+                offset_slice.append(slice(None))
+            offset_slice.append(0)
+            for i in range(offset_index+1,len(self.coords)):
+                offset_slice.append(slice(None))
+            if rdir == 1:   # enlarge the param-tensor by the max roll_range
+                zero_element = tt.zeros_like(self.param[index_slice])
+                padding = tt.stack([zero_element]*nroll)
+                padding = [self.param,padding]
+                to_roll = tt.concatenate(padding,axis=index)
+            else:   # roll back doesn't require padding
+                to_roll = self.param
+            # Roll
+            for i in range(len(offset)):
+                offset_slice[offset_index] = i
+                r = (offset[i]-min_roll)*rdir
+                if r != 0:
+                    to_roll = tt.set_subtensor(to_roll[offset_slice],tt.roll(to_roll[offset_slice],r,axis=index))
+            # Do the coordinate-magic on base_coord
+            new_start,new_end = base[0]+np.timedelta64(min_roll,"D"),base[-1]+np.timedelta64(max_roll,"D")
+            new_base_coord = pd.date_range(start=new_start,end=new_end,freq="D")
+            if rdir == -1:
+                new_base_coord = new_base_coord[:nroll]
+                index_slice[index] = slice(0,len(new_base_coord))
+                to_roll = to_roll[index_slice]
+            new_coords = self.coords.copy()
+            new_coords[base_coord] = new_base_coord
+            
+            return DimParam(new_coords,to_roll)
+                
+        else:
+            print("Roll not possible, Base_coord is not continous",base_prop,offset_prop)
+            return None
+        
+    def UnRollByCoord(self,base_coord,offset_coord):
+        return self.RollByCoord(base_coord,offset_coord,True)
+
+class ModelParam(DimParam):
+    """ Everything is a parameter in a bayesian model """
+    def __init__(self,name,coords,param,is_variable=True):
+        super(ModelParam,self).__init__(coords,param)
+    
         
     def Overlap(self,other,sum_missing={}):
         """ Returns overlap of both params,
@@ -214,7 +338,7 @@ class ObservedData(ModelParam):
     """ Holds Data, allows index-based matching of data """
     def __init__(self,name,data):
         """ data : xarray"""
-        coords = {} # xarray.DataArray.coords is not properly ordered.
+        coords = OrderedDict() # xarray.DataArray.coords is not properly ordered.
         for d in data.dims:
             coords[d] = sorted(data.coords[d].values) # Make sure indices are sorted as well.
         param = theano.shared(data.sel(coords).values)
