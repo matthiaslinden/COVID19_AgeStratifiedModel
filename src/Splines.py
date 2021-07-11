@@ -9,34 +9,23 @@ import theano.tensor as tt
 
 Implements chains multidimensional of Catmull-Rom-splines in Theano
 
-# Challenges
-- split evaluation-space inbetween control-points
+TODO:
+	* There is an issue on OSX, running as a script, where constant-folding optimization causes an errer. No problem running in a notebook or under linux...
+
 """
-
-#alpha = theano.tensor.dscalar()
-#ti = theano.tensor.dscalar()
-#p1 = theano.tensor.dvector()
-#p2 = theano.tensor.dvector()
-
-# t-space
 def tj05(ti,p1,p2):
 	d = p2-p1
 	dd = tt.dot(d,d)
 	return tt.pow(dd,0.25)+ti
 	
-#tj = theano.function([ti,p1,p2,alpha],f_tj(ti,p1,p2,alpha))
-
-#def tj05_split(ti,px1,px2,pv1,pv2):
-#	d = pv2-pv1
-#	dd = tt.dot(d,d)
-#	return tt.pow(dd+(px2-px1)*(px2-px1),0.25)+ti
-
 def tj05_split(ti,px1,px2,pv1,pv2,alpha=0.5):
 	d = pv2-pv1
 	dd = tt.dot(d,d)
 	return tt.pow(dd+(px2-px1)*(px2-px1),alpha/2.)+ti
 
 def CentripetalCatmullRomSpline_splitControls(cpx,cpv,space):
+	""" Control points are split in location cpx and values (can be multi-dim),
+	separating what's 'constant' numpy arrays (cpx, space) from theano objects (cpv)"""
 	# scaled space (fixed positions, no theano)
 	space1 = (space-cpx[1])/(cpx[2]-cpx[1])
 		
@@ -56,53 +45,6 @@ def CentripetalCatmullRomSpline_splitControls(cpx,cpv,space):
 	C = (t2-tspace)/(t2-t1)*B1 + (tspace-t1)/(t2-t1)*B2
 	return C
 
-def CentripetalCatmullRomSpline(cp,space):
-	t0 = tt.cast(0.,"float32")
-#	t1 = tj05(t0,cp[0],cp[1])
-#	t2 = tj05(t1,cp[1],cp[2])
-#	t3 = tj05(t2,cp[2],cp[3])
-	
-	t1 = tt.pow(tt.dot(cp[0]-cp[1],cp[0]-cp[1]),0.25)+t0
-	t2 = tt.pow(tt.dot(cp[1]-cp[2],cp[1]-cp[2]),0.25)+t1
-	t3 = tt.pow(tt.dot(cp[2]-cp[3],cp[2]-cp[3]),0.25)+t2
-	
-	print("cp",cp.eval())
-	print("cp0",cp[0].eval())
-	
-	# map evaluation space
-	space1 = (space-cp[1,0])/(cp[2,0]-cp[1,0])	
-	tspace = ( t1 + space1*(t2-t1) )#.reshape((space.shape[0],1,1,))
-	
-#	print("tspace",tspace.eval())
-	# broadcast
-	p = cp[:,1:].dimshuffle('x',0,1)
-	
-	print(p.eval())
-
-	print("ts",t0.eval(),t1.eval(),t2.eval(),t3.eval())
-	print("p",p.eval())
-	print("t1-tspace",(t1-tspace).eval())
-	print("(t1-tspace)/(t1-t0)",((t1-tspace)/(t1-t0)).eval())
-	print("(t1-tspace)/(t1-t0)",((t1-tspace)/(t1-t0)).reshape((space.shape[0],1)).eval())
-	
-	print("p0",p[:,0].eval())
-	print("p0*(t1-tspace)/(t1-t0)",(p[:,0]*((t1-tspace)/(t1-t0)).reshape(space.shape[0],1)).eval())
-#	print("p*(t1-tspace)")
-	
-#	print(((t1-tspace)/(t1-t0)).eval())
-	
-#	A1 = p[0,0] * (t1-tspace)/(t1-t0) + p[0,1] * (tspace-t0)/(t1-t0)
-	
-#	print(A1.eval())
-	
-#	A2 = p[1] * (t2-tspace)/(t2-t1) + p[2] * (tspace-t1)/(t2-t1)
-#	A3 = p[2] * (t3-tspace)/(t3-t2) + p[3] * (tspace-t2)/(t3-t2)
-#	B1 = (t2-tspace)/(t2-t0)*A1 + (tspace-t0)/(t2-t0)*A2
-#	B2 = (t3-tspace)/(t3-t1)*A2 + (tspace-t1)/(t3-t1)*A3
-#	C = (t2-tspace)/(t2-t1)*B1 + (tspace-t1)/(t2-t1)*B2
-#	return C
-	
-	
 class Spline(object):
 	def __init__(self,cpx,cpv):
 		"""
@@ -122,25 +64,15 @@ class Spline(object):
 			cpx,cpv = self.cpx,self.cpv
 		cpv = cpv.dimshuffle(1,0)
 		
-		print(cpx)
-		print(cpv.eval())
-		
 		return self.SplitSpaceByControlPoints(cpx,cpv,space)
 		
 	def SplitSpaceByControlPoints(self,cpx,cpv,space):
-		
 		cpxt = tt.cast(cpx,cpv.dtype)
-#		cp = tt.concatenate([cpxt.dimshuffle(0,'x'),cpv.dimshuffle(1,0)],axis=1)
-		
 		segments = []
 		
 		for i in range(cpx.shape[0]-3):
-#			cpi = cp[i:(i+4)]
 			idx = np.where((space >= cpx[i+1])*(space < cpx[i+2]))
-#			si = tt.cast(space[idx],cpv.dtype)
 			si = space[idx]
-			
-			
 			r = slice(i,i+4)
 			segment = CentripetalCatmullRomSpline_splitControls(cpx[r],cpv[r],si)
 			segments.append(segment)
@@ -180,7 +112,7 @@ class Spline(object):
 		
 
 def main():
-	theano.config.gcc.cxxflags = "-Wno-c++11-narrowing"
+	theano.config.gcc.cxxflags = "-Wno-c++11-narrowing"	# Doesn't seem to work fixing the OSX issue.
 	theano.config.optimizer="fast_run"
 	
 	cpx = np.array([2,4,6,7,12],"float64")
