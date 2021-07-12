@@ -11,12 +11,9 @@ Implements chains multidimensional of Catmull-Rom-splines in Theano
 
 TODO:
 	* There is an issue on OSX, running as a script, where constant-folding optimization causes an errer. No problem running in a notebook or under linux...
+		[fix: import pymc3 or theano.config.gcc__cxxflags = "-Wno-c++11-narrowing"]
 
 """
-def tj05(ti,p1,p2):
-	d = p2-p1
-	dd = tt.dot(d,d)
-	return tt.pow(dd,0.25)+ti
 	
 def tj05_split(ti,px1,px2,pv1,pv2,alpha=0.5):
 	d = pv2-pv1
@@ -51,15 +48,17 @@ class Spline(object):
 			cpx : control point x value, numpy:array [points]
 			cpy : control point y value(s) theano:tensor [dimension,points]
 		"""
-		self.cpx = cpx
+		self.ref = cpx[0]
+		self.cpx = cpx-self.ref
 		self.cpv = cpv
 		
 	def EvaluateAt(self,space,expand=True):
 		"""
 			space, array of points along the x-space, where the Spline is evaluated
 		"""
+		space = space-self.ref
 		if expand:
-			cpx,cpv = self.ExpandCoverage(space)
+			cpx,cpv,space = self.ExpandCoverage(space)
 		else:
 			cpx,cpv = self.cpx,self.cpv
 		cpv = cpv.dimshuffle(1,0)
@@ -69,11 +68,12 @@ class Spline(object):
 	def SplitSpaceByControlPoints(self,cpx,cpv,space):
 		cpxt = tt.cast(cpx,cpv.dtype)
 		segments = []
-		
+				
 		for i in range(cpx.shape[0]-3):
 			idx = np.where((space >= cpx[i+1])*(space < cpx[i+2]))
 			si = space[idx]
 			r = slice(i,i+4)
+			
 			segment = CentripetalCatmullRomSpline_splitControls(cpx[r],cpv[r],si)
 			segments.append(segment)
 		
@@ -82,25 +82,31 @@ class Spline(object):
 	def ExpandCoverage(self,space):
 		""" Ensures that the ControlPoints cover the whole space by repeating the first/last control point"""
 		cpx = self.cpx
-		cpv = self.cpv		
-		if space[0] < cpx[1]:
+		cpv = self.cpv
+		
+		# Handle Datetime --> convert [ns] to 1-day = 1 unit
+		if cpx.dtype == "timedelta64[ns]":
+			cpx = cpx.astype(int).to_numpy()/(1000000000.*60*60*24)
+			space = space.astype(int).to_numpy()/(1000000000.*60*60*24)
+		
+		if space[0] <= cpx[1]:
 			d = cpx[1]-cpx[0]
-			ncpx = np.reshape(cpx[0]-d,(1,))
+			ncpx = np.reshape(min(space[0],cpx[0]-d),(1,))
 			ncpv = cpv[:,0].dimshuffle(0,'x')
-			if space[0] < cpx[0]:
+			if space[0] <= cpx[0]:
 				ncpx2 = np.reshape(space[0]-d,(1,))
 				cpx = np.concatenate((ncpx2,ncpx,cpx))
 				cpv = tt.concatenate((ncpv,ncpv,cpv),axis=1)
 			else:
 				cpx = np.concatenate((ncpx,cpx))
 				cpv = tt.concatenate((ncpv,cpv),axis=1)
-			
-		if space[-1] > cpx[-2]:
+		
+		if space[-1] >= cpx[-2]:
 			d = cpx[-1]-cpx[-2]
-			ncpx = np.reshape(cpx[-1]+d,(1,))
+			ncpx = np.reshape(max(space[-1],cpx[-1]+d),(1,))
 			ncpv = cpv[:,-1].dimshuffle(0,'x')
 			
-			if space[-1] > cpx[-1]:
+			if space[-1] >= cpx[-1]:
 				ncpx2 = np.reshape(space[-1]+d,(1,))
 				cpx = np.concatenate((cpx,ncpx,ncpx2))
 				cpv = tt.concatenate((cpv,ncpv,ncpv),axis=1)
@@ -108,11 +114,11 @@ class Spline(object):
 				cpx = np.concatenate((cpx,ncpx))
 				cpv = tt.concatenate((cpv,ncpv),axis=1)
 			
-		return cpx,cpv
+		return cpx,cpv,space
 		
 
 def main():
-	theano.config.gcc.cxxflags = "-Wno-c++11-narrowing"	# Doesn't seem to work fixing the OSX issue.
+	theano.config.gcc__cxxflags = "-Wno-c++11-narrowing"
 	theano.config.optimizer="fast_run"
 	
 	cpx = np.array([2,4,6,7,12],"float64")
@@ -135,5 +141,28 @@ def main():
 	print(c.eval())
 	
 	
+def main2():
+	import pandas as pd
+	import datetime
+	
+	theano.config.gcc__cxxflags = "-Wno-c++11-narrowing"	# Doesn't seem to work fixing the OSX issue.
+	theano.config.optimizer="fast_run"
+	
+	start,end = datetime.datetime(2020,1,1),datetime.datetime(2020,12,31)
+	dr1 = pd.date_range(start,end,freq='M')
+	dr2 = pd.date_range(start,end,freq='D')
+
+
+	y = tt.cast(np.array([3,3,3,.8,.9,.9,1,1.1,1.2,1.1,1,1.2],"float64").reshape(1,12),"float64")
+
+	s1 = Spline(dr1,y)
+	print(s1.ref)
+	v = s1.EvaluateAt(dr2).eval()
+
+	print(y.shape)
+
+	print(dr1)
+	
+	
 if __name__ == "__main__":
-	main()
+	main2()
