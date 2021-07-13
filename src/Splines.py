@@ -15,10 +15,10 @@ TODO:
 
 """
 	
-def tj05_split(ti,px1,px2,pv1,pv2,alpha=0.5):
+def tj05_split(px1,px2,pv1,pv2,alpha=0.5):
 	d = pv2-pv1
 	dd = tt.dot(d,d)
-	return tt.pow(dd+(px2-px1)*(px2-px1),alpha/2.)+ti
+	return tt.pow(dd+(px2-px1)*(px2-px1),alpha/2.)
 
 def CentripetalCatmullRomSpline_splitControls(cpx,cpv,space):
 	""" Control points are split in location cpx and values (can be multi-dim),
@@ -27,9 +27,9 @@ def CentripetalCatmullRomSpline_splitControls(cpx,cpv,space):
 	space1 = (space-cpx[1])/(cpx[2]-cpx[1])
 		
 	t0 = tt.cast(0.,"float64")
-	t1 = tj05_split(t0,cpx[0],cpx[1],cpv[0],cpv[1])
-	t2 = tj05_split(t1,cpx[1],cpx[2],cpv[1],cpv[2])
-	t3 = tj05_split(t2,cpx[2],cpx[3],cpv[2],cpv[3])
+	t1 = tj05_split(cpx[0],cpx[1],cpv[0],cpv[1]) + t0
+	t2 = tj05_split(cpx[1],cpx[2],cpv[1],cpv[2]) + t1
+	t3 = tj05_split(cpx[2],cpx[3],cpv[2],cpv[3]) + t2
 
 	tspace = ( t1 + space1*(t2-t1) ).reshape((space.shape[0],1,))
 	p = cpv.dimshuffle(0,'x',1)
@@ -37,7 +37,7 @@ def CentripetalCatmullRomSpline_splitControls(cpx,cpv,space):
 	A1 = p[0] * (t1-tspace)/(t1) + p[1] * (tspace)/(t1)
 	A2 = p[1] * (t2-tspace)/(t2-t1) + p[2] * (tspace-t1)/(t2-t1)
 	A3 = p[2] * (t3-tspace)/(t3-t2) + p[3] * (tspace-t2)/(t3-t2)
-	B1 = (t2-tspace)/(t2-t0)*A1 + (tspace-t0)/(t2-t0)*A2
+	B1 = (t2-tspace)/(t2)*A1 + (tspace)/(t2)*A2
 	B2 = (t3-tspace)/(t3-t1)*A2 + (tspace-t1)/(t3-t1)*A3
 	C = (t2-tspace)/(t2-t1)*B1 + (tspace-t1)/(t2-t1)*B2
 	return C
@@ -72,10 +72,12 @@ class Spline(object):
 		for i in range(cpx.shape[0]-3):
 			idx = np.where((space >= cpx[i+1])*(space < cpx[i+2]))
 			si = space[idx]
-			r = slice(i,i+4)
+			if len(si) > 0:
 			
-			segment = CentripetalCatmullRomSpline_splitControls(cpx[r],cpv[r],si)
-			segments.append(segment)
+				r = slice(i,i+4)
+			
+				segment = CentripetalCatmullRomSpline_splitControls(cpx[r],cpv[r],si)
+				segments.append(segment)
 		
 		return tt.concatenate(segments,axis=0)
 		
@@ -162,6 +164,7 @@ def main2():
 	print(y.shape)
 
 	print(dr1)
+	print(y)
 	
 	
 if __name__ == "__main__":

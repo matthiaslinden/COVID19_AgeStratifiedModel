@@ -1350,7 +1350,7 @@ deaths_rev["210711"] = [1,0]
 
 # 210712
 ending["210712"] = datetime.datetime(2021,7,12)
-deaths_rev["210712"] = [0,1,0,0,0,0,0,1,2,1,1,0,2,0,2,0,0,2,4,4,1,3,6,4,4,4,5,5,5,4,7,5,4,6,4,5,4,3,6,5,9,11,8,15,11,11,15,12,11,14,12,11,17,12,20,11,19,13,22,20,23,27,15,21,18,27,18,17]
+deaths_rev["210712"] = [0,1,0,0,0,0,0,1,2,1,1,0,2,0,2,0,0,2,4,4,1,3,6,4,4,4,4,5,5,5,4,7,5,4,6,4,5,4,3,6,5,9,11,8,15,11,11,15,12,11,14,12,11,17,12,20,11,19,13,22,20,23,27,15,21,18,27,18,17]
 
 
 def BW_ReportedDeaths(debug=False):
@@ -1375,7 +1375,7 @@ def BW_ReportedDeaths(debug=False):
 	if debug:
 #		for i,l in enumerate(deaths[:,0:90]):
 #		for i,l in enumerate(deaths[:,370:450]):
-		for i,l in enumerate(deaths[:,400:]):
+		for i,l in enumerate(deaths[:,410:]):
 			print(spubs[i],list(l))
 #	print(list(deaths[:30,:30]))
 	
