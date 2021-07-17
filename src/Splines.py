@@ -2,6 +2,10 @@
 import numpy as np
 import theano
 
+#theano.config.gcc__cxxflags = "-Wno-c++11-narrowing"
+#theano.config.optimizer="fast_run"
+theano.config.exception_verbosity="high"
+
 import theano.tensor as tt
 
 
@@ -50,9 +54,13 @@ class Spline(object):
 		"""
 		self.ref = cpx[0]
 		self.cpx = cpx-self.ref
-		self.cpv = cpv
+		self.single_dim = len(cpv.broadcastable) == 1
+		if self.single_dim:
+			self.cpv = cpv.dimshuffle('x',0)
+		else:
+			self.cpv = cpv
 		
-	def EvaluateAt(self,space,expand=True):
+	def EvaluateAt(self,space,expand=True,old=False):
 		"""
 			space, array of points along the x-space, where the Spline is evaluated
 		"""
@@ -61,11 +69,26 @@ class Spline(object):
 			cpx,cpv,space = self.ExpandCoverage(space)
 		else:
 			cpx,cpv = self.cpx,self.cpv
-		cpv = cpv.dimshuffle(1,0)
 		
-		return self.SplitSpaceByControlPoints(cpx,cpv,space)
+		# Which implementation to use
+		if old:
+			cpv = cpv.dimshuffle(1,0)
+			if self.single_dim:
+				return self.SplitSpaceByControlPoints_old(cpx,cpv,space)[:,0]
+			else:
+				return self.SplitSpaceByControlPoints_old(cpx,cpv,space)
+		else:
+			if self.single_dim:
+				return self.CalculateSpline(cpx,cpv,space)[0]
+			else:
+				return self.CalculateSpline(cpx,cpv,space)
 		
-	def SplitSpaceByControlPoints(self,cpx,cpv,space):
+	def SplitSpaceByControlPoints_old(self,cpx,cpv,space):
+		"""
+			This version is garbage. It creates a lot of redundant theano code for each segment.
+			The plus side should have been it's memory footprint. But I doubt that.
+			Runtime in pymc4 scales O^2 which is not usable above space-length of 200.
+		"""
 		cpxt = tt.cast(cpx,cpv.dtype)
 		segments = []
 				
@@ -80,6 +103,73 @@ class Spline(object):
 				segments.append(segment)
 		
 		return tt.concatenate(segments,axis=0)
+	
+	def GenIndex(self,cpx,space,numpy_index = False):
+		""" Generate the space-index, mapping space to control-point-segments
+			numpy-index doesn't seem to work, as broadcasting is not possible in this version
+		"""
+		if numpy_index:
+			index = np.zeros((cpx.shape[0]-3,space.shape[0],),"int8")
+		else:
+			index = tt.zeros((cpx.shape[0]-3,space.shape[0],),"int8")
+		for i in range(cpx.shape[0]-3):
+			idx = np.where((space >= cpx[i+1])*(space < cpx[i+2]))[0]
+			if len(idx) > 0:
+				if numpy_index:
+					index[i,idx] = 1
+				else:
+					index = tt.set_subtensor(index[i,idx],1)
+		return index	# segment x 1st-control-point
+		
+	def SplitSpaceByControlPoints(self,cpx,cpv,space):
+		"""
+			Improved version.
+			index-tensor only needs to be created once.
+		"""
+		index = tt.cast(self.GenIndex(cpx,space),cpv.dtype)
+	
+		cpx_theano = tt.cast(cpx,cpv.dtype).dimshuffle(0,'x')
+		cp = tt.concatenate([cpx_theano,cpv.dimshuffle(1,0)],axis=1)
+
+		# segment x cp_i x dimensions
+		cpm = tt.stack([cp[:-3],cp[1:-2],cp[2:-1],cp[3:]],axis=1)
+		return index,cpm
+	
+	def CalculateSpline(self,cpx,cpv,space):
+		"""
+			new improved version. Vectorized calculation for the whole evaluation-space
+			cpv as dimension x cp_i, a row for each control-dimension
+		"""
+		index,cpm = self.SplitSpaceByControlPoints(cpx,cpv,space)
+		# Match dims: segment x cp_i x dimension x space
+		index = index.dimshuffle(0,'x','x',1)
+		cpm = cpm.dimshuffle(0,1,2,'x')
+		
+		# Control points: cp_i x dimension x space
+		cp = tt.sum(index*cpm,axis=0)
+		
+		t = tt.zeros((space.shape[0],),cpv.dtype)
+		ti = [t]
+		for i in range(3):
+			d = tt.sum((cp[i+1]-cp[i])*(cp[i+1]-cp[i]),axis=0)
+			t = tt.pow(d,.25) + t
+			ti.append(t)
+		# t_i x space
+		t = tt.stack(ti)
+		
+		# Scale the space
+		spacet = tt.cast(space,cpv.dtype)
+		space1 = (spacet-cp[1,0])/(cp[2,0]-cp[1,0])
+		tspace = (t[1] + space1 * (t[2]-t[1]))
+		p = cp[:,1:]
+		
+		A1 = p[0] * (t[1]-tspace)/t[1] + p[1] * tspace/t[1]
+		A2 = p[1] * (t[2]-tspace)/(t[2]-t[1]) + p[2] * (tspace-t[1])/(t[2]-t[1])
+		A3 = p[2] * (t[3]-tspace)/(t[3]-t[2]) + p[3] * (tspace-t[2])/(t[3]-t[2])
+		B1 = A1 * (t[2]-tspace)/t[2] + A2 * tspace/t[2]
+		B2 = A2 * (t[3]-tspace)/(t[3]-t[1]) + A3 * (tspace-t[1])/(t[3]-t[1])
+		C = B1 * (t[2]-tspace)/(t[2]-t[1]) + B2 * (tspace-t[1])/(t[2]-t[1])
+		return C
 		
 	def ExpandCoverage(self,space):
 		""" Ensures that the ControlPoints cover the whole space by repeating the first/last control point"""
@@ -119,10 +209,8 @@ class Spline(object):
 		return cpx,cpv,space
 		
 
-def main():
-	theano.config.gcc__cxxflags = "-Wno-c++11-narrowing"
-	theano.config.optimizer="fast_run"
-	
+def main1():
+		
 	cpx = np.array([2,4,6,7,12],"float64")
 	cpy1 = np.array([1,2,2,3,1],"float64")
 	cpy2 = np.array([2,3,4,2,5],"float64")
@@ -131,7 +219,7 @@ def main():
 	cpx = np.array(cpx)
 	cpy = tt.stack([cpy1,cpy2,cpy3])
 	
-	space = np.linspace(1,10,32,"float64")
+	space = np.linspace(4.5,6.5,32,"float64")
 	
 	print(cpx)
 	print(cpy.eval())
@@ -146,26 +234,28 @@ def main():
 def main2():
 	import pandas as pd
 	import datetime
-	
-	theano.config.gcc__cxxflags = "-Wno-c++11-narrowing"	# Doesn't seem to work fixing the OSX issue.
-	theano.config.optimizer="fast_run"
-	
+	import time
+		
 	start,end = datetime.datetime(2020,1,1),datetime.datetime(2020,12,31)
 	dr1 = pd.date_range(start,end,freq='M')
 	dr2 = pd.date_range(start,end,freq='D')
 
 
-	y = tt.cast(np.array([3,3,3,.8,.9,.9,1,1.1,1.2,1.1,1,1.2],"float64").reshape(1,12),"float64")
+	y = tt.cast(np.array([3,3,3,.8,.9,.9,1,1.1,1.2,1.1,1,1.2],"float64"),"float64")
 
 	s1 = Spline(dr1,y)
 	print(s1.ref)
-	v = s1.EvaluateAt(dr2).eval()
-
-	print(y.shape)
-
+	
+	t0 = time.time()
+	v = s1.EvaluateAt(dr2,expand=True,old=False).eval()
+	t1 = time.time()
+	print("in %.3fs"%(t1-t0))
+	
 	print(dr1)
 	print(y)
-	
+	print(v.shape)
 	
 if __name__ == "__main__":
+	main1()
+	
 	main2()
