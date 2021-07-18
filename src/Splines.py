@@ -1,4 +1,4 @@
-
+from collections import OrderedDict
 import numpy as np
 import theano
 
@@ -7,6 +7,8 @@ import theano
 theano.config.exception_verbosity="high"
 
 import theano.tensor as tt
+
+from ModelParams import ModelParam
 
 
 """
@@ -26,7 +28,10 @@ def tj05_split(px1,px2,pv1,pv2,alpha=0.5):
 
 def CentripetalCatmullRomSpline_splitControls(cpx,cpv,space):
 	""" Control points are split in location cpx and values (can be multi-dim),
-	separating what's 'constant' numpy arrays (cpx, space) from theano objects (cpv)"""
+	separating what's 'constant' numpy arrays (cpx, space) from theano objects (cpv)
+	
+	cvp : [point x dimension]
+	"""
 	# scaled space (fixed positions, no theano)
 	space1 = (space-cpx[1])/(cpx[2]-cpx[1])
 		
@@ -47,10 +52,14 @@ def CentripetalCatmullRomSpline_splitControls(cpx,cpv,space):
 	return C
 
 class Spline(object):
+	""" Catmull-Rom splines, evaluated over fixed points
+	
+	"""
+	
 	def __init__(self,cpx,cpv):
 		"""
 			cpx : control point x value, numpy:array [points]
-			cpy : control point y value(s) theano:tensor [dimension,points]
+			cpy : control point y value(s) theano:tensor [dimension,points] or [points] if 1D
 		"""
 		self.ref = cpx[0]
 		self.cpx = cpx-self.ref
@@ -62,7 +71,10 @@ class Spline(object):
 		
 	def EvaluateAt(self,space,expand=True,old=False):
 		"""
-			space, array of points along the x-space, where the Spline is evaluated
+			space: (numpy)array of points along the x-space, where the Spline is evaluated
+			splits the space into segments between control points.
+			if neccessary, extend control points to cover the whole space, by repeating the edge-control-values.
+			return tensor [dimension x space] or [space] if 1D
 		"""
 		space = space-self.ref
 		if expand:
@@ -74,9 +86,9 @@ class Spline(object):
 		if old:
 			cpv = cpv.dimshuffle(1,0)
 			if self.single_dim:
-				return self.SplitSpaceByControlPoints_old(cpx,cpv,space)[:,0]
+				return self.SplitSpaceByControlPoints_old(cpx,cpv,space).dimshuffle(1,0)[0]
 			else:
-				return self.SplitSpaceByControlPoints_old(cpx,cpv,space)
+				return self.SplitSpaceByControlPoints_old(cpx,cpv,space).dimshuffle(1,0)
 		else:
 			if self.single_dim:
 				return self.CalculateSpline(cpx,cpv,space)[0]
@@ -96,9 +108,7 @@ class Spline(object):
 			idx = np.where((space >= cpx[i+1])*(space < cpx[i+2]))
 			si = space[idx]
 			if len(si) > 0:
-			
 				r = slice(i,i+4)
-			
 				segment = CentripetalCatmullRomSpline_splitControls(cpx[r],cpv[r],si)
 				segments.append(segment)
 		
@@ -125,11 +135,12 @@ class Spline(object):
 		"""
 			Improved version.
 			index-tensor only needs to be created once.
+			cpv [cp_i, dimensions]
 		"""
 		index = tt.cast(self.GenIndex(cpx,space),cpv.dtype)
 	
 		cpx_theano = tt.cast(cpx,cpv.dtype).dimshuffle(0,'x')
-		cp = tt.concatenate([cpx_theano,cpv.dimshuffle(1,0)],axis=1)
+		cp = tt.concatenate([cpx_theano,cpv.dimshuffle(1,0)],axis=1)	# change ordering to (1+dimensions) x cp_i
 
 		# segment x cp_i x dimensions
 		cpm = tt.stack([cp[:-3],cp[1:-2],cp[2:-1],cp[3:]],axis=1)
@@ -208,8 +219,32 @@ class Spline(object):
 			
 		return cpx,cpv,space
 		
+# Untested code:
+def ParamsSpline(Spline):
+	def __init__(self,cpx,mpv,coords=None):
+		"""mpv can be ModelParam, containing info about name, coords"""
+		self.coords = OrderedDict()
+		if type(mpv) == ModelParam:
+			cpv = mpv.param
+			self.coords.update(mpv.coords)
+		else:
+			cpv = mpv
+			if self.coords != None:
+				self.coords.update(coords)
+			else:
+				# TODO: fake coords if no coords are supplied
+				pass
+		super(ParamsSpline,self).__init__(cpx,cpy)
+		
+	def EvaluateParamAt(self,space,name=None):
+		coords = OrderedDict()
+		coords["space"] = space
+		coords.update(self.coords)
+		return ModelParam(name,coords,self.EvaluateAt(space))
 
+old = False
 def main1():
+	import time
 		
 	cpx = np.array([2,4,6,7,12],"float64")
 	cpy1 = np.array([1,2,2,3,1],"float64")
@@ -226,9 +261,13 @@ def main1():
 	print(space,space.dtype)
 	
 	s1 = Spline(cpx,cpy)
-	c = s1.EvaluateAt(space,True)
-	
-	print(c.eval())
+	t0 = time.time()
+	c = s1.EvaluateAt(space,expand=True,old=old)
+	t1 = time.time()
+	v = c.eval()
+	t2 = time.time()
+	print("in %.3fs %.3fs"%(t1-t0,t2-t1))
+	print(v.shape)
 	
 	
 def main2():
@@ -240,20 +279,20 @@ def main2():
 	dr1 = pd.date_range(start,end,freq='M')
 	dr2 = pd.date_range(start,end,freq='D')
 
-
+	# 1 dimension
 	y = tt.cast(np.array([3,3,3,.8,.9,.9,1,1.1,1.2,1.1,1,1.2],"float64"),"float64")
 
 	s1 = Spline(dr1,y)
 	print(s1.ref)
 	
 	t0 = time.time()
-	v = s1.EvaluateAt(dr2,expand=True,old=False).eval()
+	c = s1.EvaluateAt(dr2,expand=True,old=old)
 	t1 = time.time()
-	print("in %.3fs"%(t1-t0))
-	
-	print(dr1)
-	print(y)
+	v = c.eval()
+	t2 = time.time()
+	print("in %.3fs %.3fs"%(t1-t0,t2-t1))
 	print(v.shape)
+	
 	
 if __name__ == "__main__":
 	main1()

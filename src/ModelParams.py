@@ -118,6 +118,10 @@ class DimParam(object):
     def __init__(self,coords,param):
         self.coords = coords
         self.param = param
+    
+    @property
+    def shape(self):
+        return set([len(x) for x in self.coords.values()])
         
     def Dims(self):
         return list(self.coords.keys())
@@ -299,6 +303,8 @@ class ModelParam(DimParam):
             A_sum = sum_missing.get(dim,"skip") 
             B_sum = sum_missing.get(dim,"skip")
             
+            print(axis,dim,iC,iPA,iPB,A_sum,B_sum)
+            
             if iPA["countable"] == iPB["countable"] and iPA["countable"] == False:
                 # Simple case for non-countable indices, only skipping with a boolean mask
                 A_indexer.append(IndexMap(iA,iC))
@@ -306,7 +312,7 @@ class ModelParam(DimParam):
                 
             else: # more complex case, might involve skipping/summing of elements
                 iPC = IndexProperties(iC) 
-                
+                print(axis,dim,iPC)
                 if iPC["continous"] == True:
                     if iPC["stepsize"] == iPA["stepsize"]:
                         A_indexer.append( slice(iA.index(iC[0]),iA.index(iC[-1])+1) )
