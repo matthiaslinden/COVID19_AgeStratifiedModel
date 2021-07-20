@@ -22,9 +22,8 @@ def IndexProperties(x):
     try:
         steps = np.diff(x)
         stepsizes = len(set(steps))
-    
         return {"countable":True,"continous":stepsizes==1,"stepsize":min(steps)}
-    except:
+    except ValueError:
         return {"countable":False}
 
 def IndexMap(x,common):
@@ -155,6 +154,15 @@ class DimParam(object):
     
     def iSel(self,axes):
         pass
+        
+    def RenameAxes(self,rename):
+        """ Rename axes """
+        new_coords = OrderedDict()
+        for k,v in self.coords.items():
+            k_new = rename.get(k,k)
+            new_coords[k_new] = v
+        self.coords = new_coords
+        return self
     
     def Sum(self,axes):
         """ Sum the parameter along supplied axes.  """
@@ -247,7 +255,22 @@ class DimParam(object):
 class ModelParam(DimParam):
     """ Everything is a parameter in a bayesian model """
     def __init__(self,name,coords,param,is_variable=True):
-        super(ModelParam,self).__init__(coords,param)
+        
+        # Ensure coordinates are the same type, especially transform DatetimeIndex
+        new_coords = OrderedDict()
+        for k,v in coords.items():
+            if type(v) in [list,range,pd.core.indexes.datetimes.DatetimeIndex]:
+                new_coords[k] = np.array(v)
+            else:
+                new_coords[k] = v
+            
+#            tv = type(v)
+ #           if tv in [list,range]:
+  #              new_coords[k] = v
+   #         elif tv in [pd.core.indexes.datetimes.DatetimeIndex]:
+    #            new_coords[k] = list(v.to_numpy())
+            
+        super(ModelParam,self).__init__(new_coords,param)
     
         
     def Overlap(self,other,sum_missing={}):
@@ -257,7 +280,9 @@ class ModelParam(DimParam):
         dims,other_dims = self.Dims(),other.Dims()
         dimS,other_dimS = set(dims),set(other_dims)
         
-        dim_overlap = dimS.intersection(other_dimS)
+        dim_overlap = dimS.intersection(other_dimS)        
+        print("overlap",dim_overlap)
+        
         overlap,other_overlap = self.param, other.param
         if len(dim_overlap) > 0:
             # figure non-matching dimensions, sum over non-matching dimensions
@@ -295,9 +320,12 @@ class ModelParam(DimParam):
         A_indexer,B_indexer,common_index = [],[],{}
         for axis,dim in enumerate(A_index.keys()):
             iA,iB = A_index[dim], B_index[dim] 
-                   
+            
             iC = np.array(sorted( set(iA).intersection(set(iB)) ))
             common_index[dim] = iC
+            
+            print(axis,dim)
+            print("common\n",iC)
             
             iPA,iPB = IndexProperties(iA),IndexProperties(iB)
             A_sum = sum_missing.get(dim,"skip") 
@@ -315,13 +343,15 @@ class ModelParam(DimParam):
                 print(axis,dim,iPC)
                 if iPC["continous"] == True:
                     if iPC["stepsize"] == iPA["stepsize"]:
-                        A_indexer.append( slice(iA.index(iC[0]),iA.index(iC[-1])+1) )
+#                        A_indexer.append( slice(iA.index(iC[0]),iA.index(iC[-1])+1) )
+                        A_indexer.append( slice(np.argmax(iA==iC[0]),np.argmax(iA==iC[-1])+1) )
                     else:
                         A = IndexSumToMatch(A,iA,iC,len(A_index.keys()),axis,A_sum)
                         A_indexer.append(slice(None))
 
                     if iPC["stepsize"] == iPB["stepsize"]:
-                        B_indexer.append( slice(iB.index(iC[0]),iB.index(iC[-1])+1) )
+#                        B_indexer.append( slice(iB.index(iC[0]),iB.index(iC[-1])+1) )
+                        B_indexer.append( slice(np.argmax(iB==iC[0]),np.argmax(iB==iC[-1])+1) )
                     else:
                         B = IndexSumToMatch(B,iB,iC,len(B_index.keys()),axis,B_sum)
                         B_indexer.append(slice(None))
@@ -346,7 +376,16 @@ class ObservedData(ModelParam):
         """ data : xarray"""
         coords = OrderedDict() # xarray.DataArray.coords is not properly ordered.
         for d in data.dims:
-            coords[d] = sorted(data.coords[d].values) # Make sure indices are sorted as well.
+            ordered,former = True, data.coords[d].values[0]
+            for x in data.coords[d].values[1:]:
+                if former > x:
+                    ordered = False
+                former = x
+            if ordered:
+                coords[d] = data.coords[d].values
+            else:
+                coords[d] = sorted(data.coords[d].values) # Make sure indices are sorted as well.
+                print("Index %s was sorted, check data"%k)
         param = theano.shared(data.sel(coords).values)
         super(ObservedData,self).__init__(name,coords,param,is_variable=False)
         

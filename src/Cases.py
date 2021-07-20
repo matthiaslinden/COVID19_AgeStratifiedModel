@@ -3,9 +3,10 @@ import datetime
 import numpy as np
 import pandas as pd
 import xarray as xr
+import pickle
 
 from Utility import DateFrom6digitName
-import ModelParams
+from ModelParams import ObservedData
 
 def ParseSurvStatDay(dday):
     by_type = ["lab and clinical met","lab met, clinical not met","lab met, clinical undetermined"]
@@ -55,7 +56,19 @@ def ParseSurvStatDay_BL(dday):
     bs = xr.DataArray(d, dims=("category","BL","sex","age","week"), coords={"category":by_type,"BL":bl,"sex":sexes,"age":ages,"week":weeks})
     return bs
     
-    
+
+def ObservedCasesFromSurvstat(date_string):
+    with open("../Data/Cases/SurvStat_RKI/lks_%s.pickle"%date_string,"br") as f:
+        cases = ParseSurvStatDay_BL(pickle.load(f))
+    # Change week to end of week date
+        weeks = cases.coords["week"]
+        new_weeks = pd.DatetimeIndex(np.array([datetime.datetime(2020,3,8)+datetime.timedelta(days=int(7*(w-10))) for w in np.nditer(weeks)]))
+        coords = {"week":new_weeks}
+        coords["age"] = cases.coords["age"]
+        coords["BL"] = cases.coords["BL"]
+        weekly_cases = xr.DataArray(cases.sum(["category","sex"]).values,dims=("BL","age","week"),coords=coords)
+        
+        return ObservedData("survstat_cases",weekly_cases)
     
 # Situation Reports' Age Structure without sex, but 80+ in 5 / 10 y groups
 
