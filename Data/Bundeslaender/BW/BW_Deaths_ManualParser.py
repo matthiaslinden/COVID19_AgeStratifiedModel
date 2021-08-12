@@ -1473,6 +1473,10 @@ deaths_rev["210810"] = [0,0,0,2]
 ending["210811"] = datetime.datetime(2021,8,11)
 deaths_rev["210811"] = [0,0,1]
 
+# 210812
+ending["210812"] = datetime.datetime(2021,8,12)
+deaths_rev["210812"] = [0]
+
 def BW_ReportedDeaths(debug=False):
 	start_key = min(ending.keys())
 	start = min(ending.values())
