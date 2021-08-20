@@ -1,4 +1,6 @@
 date	cases	ventilated	new	dead	new_dead	finished	hospitals	available	occupied	comment
+2021-08-19	621	293	55		9	120012	1258	22551	18950
+
 2021-08-12	471	233	0		0	117543	1258	22632	18932
 2021-08-11	454	222	93		33	118165	1260	22641	19008	"change in reporting. new ICU directly an no longer inferred"
 2021-08-10	442	215	30		4	118084	1260	22619	18857
