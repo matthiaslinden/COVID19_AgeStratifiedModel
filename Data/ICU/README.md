@@ -11,3 +11,7 @@ https://www.intensivregister.de/#/aktuelle-lage/reports
 
 ## Reports
 https://www.divi.de/divi-intensivregister-tagesreport-archiv?layout=table&start=160
+
+
+## RKI's sit-rep
+* since 2021-08-19 thursday's long sit-rep contains a graph of the age-stratified ICU-occupancy for the last 30-isch days
