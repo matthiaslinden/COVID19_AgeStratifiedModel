@@ -1565,6 +1565,11 @@ deaths_rev["210910"] = [0,1,3,2,8,6,4,2,6,6,3,5,4,5,5,3,2,1,4,1,0,3,4,3,0,1,0,0,
 ending["210913"] = datetime.datetime(2021,9,13)
 deaths_rev["210913"] = [2,3,3,5,3,4,2,8,6,5,2,6,6,3,5,4,5,5,3,2,1,4,1,0,3,4,3,0,1]
 
+# 210914
+ending["210914"] = datetime.datetime(2021,9,14)
+deaths_rev["210914"] = [0,7,3,3,7,5,4,2,8,6,5,2,6,6,4,5,4,5,5,3,2,1,4,1,0,3,4,3,0,1,0]
+
+
 def BW_ReportedDeaths(debug=False):
 	start_key = min(ending.keys())
 	start = min(ending.values())
