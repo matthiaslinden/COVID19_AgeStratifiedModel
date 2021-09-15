@@ -1,4 +1,6 @@
 date	hospitalized "hospitalized report delta" 	"quarantined k"	"quarantined report delta k"	comment
+2021-09-14	5041	122	283.7	-5.0
+2021-09-13	4919	111	288.7	-10.6
 2021-09-12	4808	-25	299.3	-2.6
 2021-09-11	4833	-4	301.9	-0.5
 2021-09-10	4837	-48	302.4	-0.7
@@ -147,7 +149,6 @@ date	hospitalized "hospitalized report delta" 	"quarantined k"	"quarantined repo
 2021-04-19	-	-	625.3	-
 2021-04-18	-	-	604.9	-
 2021-04-17	-	-	600.0	-
-
 2021-04-16	-	-	601.	+31.
 
 2021-04-11	15820	+68	548.4	-2.1
