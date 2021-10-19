@@ -1661,6 +1661,10 @@ deaths_rev["211014"] = [2,3,3,5,3,7,4,11,11,8,9,4,4,5,7,8,3,11,8,3,4,8,6,5,2,7,6
 ending["211015"] = datetime.datetime(2021,10,15)
 deaths_rev["211015"] = [5,9,5,4,5,4,7,4,11,12,8,9,4,4,5,7,8,3,11,8,3,4,8,6,5,2,7,6,10,7,8,9,10,6,7,13,9,5,4,8,6,8,4,7,6,4,5,4,5,5,4,3,1,5,1]
 
+# 211018
+ending["211018"] = datetime.datetime(2021,10,18)
+deaths_rev["211018"] = [0,2,5,10,10,5,4,5,4,7,6,11,12,8,9,4,5,5,7,8,3,11,8,3,4,8,6,5,2,7,6,10,7,9,10,11,6,7,13,9,5,4,8,6,8,4,7,6,4,5,4,5,5,4,3,1,5,1]
+
 def BW_ReportedDeaths(debug=False):
 	start_key = min(ending.keys())
 	start = min(ending.values())
@@ -1686,7 +1690,7 @@ def BW_ReportedDeaths(debug=False):
 #		for i,l in enumerate(deaths[:,210:300]):
 #		for i,l in enumerate(deaths[:,315:395]):
 #		for i,l in enumerate(deaths[:,395:475]):
-		for i,l in enumerate(deaths[:,480:]):
+		for i,l in enumerate(deaths[:,490:]):
 			nl = np.sum(l)
 			print(i,spubs[i],list(l),nl-n)
 			n = nl
