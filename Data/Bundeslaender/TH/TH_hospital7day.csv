@@ -1,4 +1,5 @@
 # date last update, end is end of 7-day period (2021-10-18 to 2021-10-24)
 # newly hospitalized patients
-date	end	total_cases	unvax_cases	vax_cases	total_hospital	unvax_hospital	vax_hospital	total_ICU	unvax_ICU	unvax_ICU_risk	vax_ICU	vax_ICU_risk
+date	end	total_cases	unvax_cases	vax_cases	total_hospital	unvax_hospital	vax_hospital	total_ICU	unvax_ICU	unvax_ICU_risk	vax_ICU	vax_ICU_risk	comment
+2021-11-04	2021-10-31	4571	2411	1015	166	70	54	16	12	0	3	2	"all vax_ICU_risk AG80+"
 2021-10-28	2021-10-24	3622	1894	744	158	69	54	14	9	0	5	3
