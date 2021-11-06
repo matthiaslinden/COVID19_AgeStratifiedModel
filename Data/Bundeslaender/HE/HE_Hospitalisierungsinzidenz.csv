@@ -1,5 +1,5 @@
 Hospitalisierungsindzidenz_aktuell;Inzidenz_Datum;Hospitalisierungsindzidenz_letzte_Woche;Inzidenz_letzte_Woche_Datum;Intensivbettenauslastung_aktuell;Intensivbettenauslastung_bestaetigt;Intensivbettenauslastung_Verdacht;Intensivbettenauslastung_vor_einer_Woche;Bettenauslastung_Datum;Normalbettenauslastung_aktuell;Normalbettenauslastung_bestaetigt;Normalbettenauslastung_Verdacht;Normalbettenauslastung_vor_einer_Woche;ITS_Hospitalisierte_ungeimpft;ITS_Hospitalisierte_geimpft;ITS_Hospitalisierte_unbekannt;Impquote_alle;Impquote_Datum;Impquote_nur_Impffaehige
-2,24 ;17.09.2021;2,51;11.09.2021;157;147;10;;16.09.2021;388;371;71;;79;17;;62,0;17.09.2021;69,9
+2,24;17.09.2021;2,51;11.09.2021;157;147;10;;16.09.2021;388;371;71;;79;17;;62,0;17.09.2021;69,9
 2,1;18.09.2021;2,62;12.09.2021;162;154;8;;17.09.2021;376;310;66;;79;17;;;;
 2,1;19.09.2021;2,62;13.09.2021;157;147;10;;18.09.2021;353;299;64;;80;15;;;;
 2,1;20.09.2021;2,62;14.09.2021;159;143;16;;19.09.2021;368;296;71;;81;15;4;62,4;20.09.2021;70,3
@@ -48,3 +48,4 @@ Hospitalisierungsindzidenz_aktuell;Inzidenz_Datum;Hospitalisierungsindzidenz_let
 3,61;03.11.2021;3,5;27.10.2021;186;171;15;162;02.11.2021;536;459;77;425;71,3;24,6;4,1;66;02.11.2021;74,4
 3,89;04.11.2021;3,62;28.10.2021;187;172;15;161;03.11.2021;551;465;86;424;71,3;25,7;2,9;66;03.11.2021;74,4
 4,04;05.11.2021;3,73;29.10.2021;198;180;18;167;04.11.2021;567;488;79;421;69,8;26,8;3,4;66,1;05.11.2021;74,5
+4,1;06.11.2021;3,62;30.10.2021;200;186;14;158;05.11.2021;566;497;69;441;69,7;25,4;4,9;66,2;06.11.2021;74,7
