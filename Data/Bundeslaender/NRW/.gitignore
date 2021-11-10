@@ -1,3 +1,4 @@
+cookies.txt
 *.csv
 *.tar.gz
 !NRW*.tar.gz
