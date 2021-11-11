@@ -13,7 +13,7 @@ import subprocess
 
 sdir = "https://www.coronavirus.sachsen.de/"
 ddir = "corona-statistics/rest/"
-names = ["newInfectionsDevelopment.jsp","incidenceVaccinationDevelopment.jsp","hospitalDevelopment.jsp"]
+names = ["newInfectionsDevelopment.jsp","incidenceVaccinationDevelopment.jsp","hospitalDevelopment.jsp","hospitalBedOccupancyDevelopment.jsp"]
 
 # curl 'https://www.coronavirus.sachsen.de/corona-statistics/rest/newInfectionsDevelopment.jsp' \
 # -X 'GET' \
@@ -37,8 +37,9 @@ def fetch(ft):
     ofn = ft[:-4]+"_"+fstr+".jsp"
     print(url,ofn)
     
-    call = (["wget","--referer","https://www.coronavirus.sachsen.de/infektionsfaelle-in-sachsen-4151.html","-O",ofn,url])
-    subprocess.run(call)
+    if ofn not in files:
+        call = (["wget","--referer","https://www.coronavirus.sachsen.de/infektionsfaelle-in-sachsen-4151.html","-O",ofn,url])
+        subprocess.run(call)
 #   for k,v in regions.items():
 #        rname = "%s_Covid19%s"%(k,ft)
 #        name = "%s_Covid19%s_%s"%(k,ft,fstr)
