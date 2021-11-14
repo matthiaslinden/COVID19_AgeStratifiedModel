@@ -9,6 +9,7 @@ import tarfile
 import re
 
 import subprocess
+import time
 
 regions = {"NRW":5,"Koeln":5315,"Heinsberg":5370,"Siegen-W":5970,"Muenster":5515,"Bonn":5314,"Dortmund":5913,"Duisburg":5112,"Duesseldorf":5111,"Essen":5113,"Recklinghausen":5562,"Rhein-Sieg":5382,"Aachen":5334,"Wuppertal":5124,"Minden":5770,"Krefeld":5114,"Bielefeld":5711,"Hagen":5914}
 
@@ -26,7 +27,17 @@ def fetch(ft):
         if fname not in files:
             url = sdir+"covid19%s_%d.csv"%(ft,v)
             call = ('wget -q --referer https://www.lzg.nrw.de/covid19/covid19.html -O %s %s'%(fname,url)).split(" ")
-            subprocess.run(call,check="True").wait()
+            p = subprocess.run(call,capture_output=True)
+            i = 20
+            while i > 0:
+                if p.returncode == 0:
+                    i = 0
+                time.sleep(.1)
+                i -= 1
+#            status = p.poll()
+ #           if status is None:
+  #              p.wait()
+#            .wait()
 #            dname = wget.download(sdir+"covid19%s_%d.csv"%(ft,v),referer="https://www.lzg.nrw.de/covid19/covid19.html")
  #           os.rename(dname,fname)
         tarname = rname+".tar.gz"
