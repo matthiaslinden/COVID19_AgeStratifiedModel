@@ -62,7 +62,10 @@ date	status	day0	day-1	day-2	day-3	...
 2021-12-01	hospital_patients	2.083	2.116	2.079	1.970	1.958	1.963	1.918	1.943	1.928	1.838	1.700	1.596	1.638	1.615
 2021-12-01	ICU_patients	586	582	567	575	563	548	534	533	495	455	446	471	385	369
 2021-12-01	7-day_hospitalizations_byMeldedatum	5,32	7,2	8,45	8,75	9,34	10,13	11,41	11,51	11,73	12,03	12,13	12,4	12,82	13,53
+2021-12-02	hospital_patients	2.074	2.083	2.116	2.079	1.970	1.958	1.963	1.918	1.943	1.928	1.838	1.700	1.596	1.638
+2021-12-02	ICU_patients	609	586	582	567	575	563	548	534	533	495	455	446	471	385
+2021-12-02	7-day_hospitalizations_byMeldedatum	5,25	6,41	7,86	9,27	9,42	10,06	10,87	12,08	12,35	12,64	12,87	12,99	13,24	13,56
 
-2021-11-2x	hospital_patients	
-2021-11-2x	ICU_patients	
-2021-11-2x	7-day_hospitalizations_byMeldedatum	
+2021-12-0x	hospital_patients	
+2021-12-0x	ICU_patients	
+2021-12-0x	7-day_hospitalizations_byMeldedatum	
