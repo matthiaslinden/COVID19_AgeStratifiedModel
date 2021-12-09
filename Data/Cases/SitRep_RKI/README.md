@@ -14,3 +14,7 @@ since 2021-05-04 mean/median for hospitalization, ICU und deaths is available pe
 https://github.com/robert-koch-institut/COVID-19-Hospitalisierungen_in_Deutschland
 
 But be aware: hospitalizations are counted/reported by Meldedatum
+
+## Vaccination status
+since late Nov 21
+https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Inzidenz_Impfstatus.xlsx?__blob=publicationFile
