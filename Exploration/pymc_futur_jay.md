@@ -13,6 +13,7 @@ One of the goals with regard to pymc is to move ot a jax-native sampler insted
 
 ## History
 In late 2020 theano-forks appeared with jax as linker (mainline-version no longer available thano-jaxlinker?).
+Ideas layed out here: https://pymc-devs.medium.com/the-future-of-pymc3-or-theano-is-dead-long-live-theano-d8005f8a0e9b
 pymc3 Code ran unaltered usind jax as backend.
 furthermore numpyro's or tfp's NUTS implementations could be used via pymc3.sampling_jax. For example sample_tfp_nuts and sample_tfp_nuts_jit_vmap
 
@@ -35,7 +36,7 @@ As jax+rocm seems to be the easy part now (Oct. 2021). How does it work together
 
 ### Why those versions?
 More recent v.3 versions dropped pm.sampling_jax options (tfp)
-jax >= 0.2.12 dropped support for some mode (omnistaging?) used in v.3
+jax >= 0.2.12 dropped support for disabling omnistaging used in v.3 (might have to be changed to jax.config.disable_omnistaging(), see https://github.com/google/jax/blob/main/design_notes/omnistaging.md)
 
 pymc3 3.10.1 is the version of multiple examples, including
 https://github.com/pymc-devs/pymc/issues/4288
@@ -54,3 +55,17 @@ https://github.com/ROCmSoftwarePlatform/tensorflow-upstream/issues/954
 * aesara without pymc v3/v4 to see if jax is kicking in on the gpu.
 * pymc v4 with aesara
 
+
+# Further reading:
+* https://jax.readthedocs.io/en/latest/notebooks/XLA_in_Python.html XLA in python 
+* https://discourse.pymc.io/t/theano-op-using-jax-for-lightning-fast-ode-inference/7244 jax ODE solver (got sundials to compile with required lapakc+klu, but most examples are broken.)
+## jax
+* https://rlouf.github.io/post/jax-random-walk-metropolis/
+## webgpu
+* https://doc.babylonjs.com/divingDeeper/postProcesses/defaultRenderingPipeline
+* https://web.dev/gpu-compute/
+* https://raphlinus.github.io/gpu/2020/02/12/gpu-resources.html
+* https://gpuopen.com/learn/optimizing-gpu-occupancy-resource-usage-large-thread-groups/
+
+# Other
+* don't forget CPPFLAGS="-O3 -mavx2 if building from sratch (~20% python speedup, llvm 2-5% slower than gcc)
