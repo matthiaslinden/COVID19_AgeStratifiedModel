@@ -13,7 +13,7 @@ import subprocess
 
 sdir = "https://www.coronavirus.sachsen.de/"
 ddir = "corona-statistics/rest/"
-names = ["newInfectionsDevelopment.jsp","incidenceVaccinationDevelopment.jsp","hospitalDevelopment.jsp","hospitalBedOccupancyDevelopment.jsp"]
+names = ["newInfectionsDevelopment.jsp","incidenceVaccinationDevelopment.jsp","hospitalDevelopment.jsp","hospitalBedOccupancyDevelopment.jsp","mutationDevelopment.jsp"]
 
 # curl 'https://www.coronavirus.sachsen.de/corona-statistics/rest/newInfectionsDevelopment.jsp' \
 # -X 'GET' \
