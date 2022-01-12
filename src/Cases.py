@@ -11,15 +11,15 @@ from ModelParams import ObservedData
 def ParseSurvStatDay(dday):
     by_type = ["lab and clinical met","lab met, clinical not met","lab met, clinical undetermined"]
     lks = np.array([k for k in dday[2020].keys()],dtype="int16")
-    weeks = np.arange(54*2,dtype="int16")
+    weeks = np.arange(53*3,dtype="int16")
     sexes = ["male","female","unknown"]
     ages = np.arange(81,dtype="int8")
 
     d = np.zeros([len(by_type),len(lks),len(sexes),len(ages),len(weeks)],dtype="int16")
 
-    for y,o in {2020:0,2021:53}.items():
+    for y,o in {2020:0,2021:53,2022:105}.items():
         for ilk,lk in enumerate(lks[:]):
-            dlk = dday[y].get(lk,{})
+            dlk = dday.get(y,{}).get(lk,{})
             for jtyp,typ in enumerate(by_type):
                 dtyp = dlk.get(typ,{})
                 for ksex,sex in enumerate(sexes):
@@ -29,7 +29,8 @@ def ParseSurvStatDay(dday):
                             for age,data in dweek.items():
                                 if type(age) == int:
                                     d[jtyp,ilk,ksex,age,week+o] += data
-    return d
+    bs = xr.DataArray(d,dims=("category","LK","sex","age","week"),coords={"category":by_type,"LK":lks,"sex":sexes,"age":ages,"week":weeks})
+    return bs
 
 def ParseSurvStatDay_BL(dday):
     by_type = ["lab and clinical met","lab met, clinical not met","lab met, clinical undetermined"]
