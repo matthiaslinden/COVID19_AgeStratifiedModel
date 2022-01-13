@@ -1,6 +1,7 @@
 # date last update, end is end of 7-day period (2021-10-18 to 2021-10-24)
 # newly hospitalized patients, total_cases = symptomatic
 date	end	total_cases	unvax_cases	vax_cases	total_hospital	unvax_hospital	vax_hospital	total_ICU	unvax_ICU	unvax_ICU_risk	vax_ICU	vax_ICU_risk	comment
+2022-01-13	2022-01-09	3958	1218	969	101	46	23	8	7	0	1	0	
 2022-01-06	2022-01-02	4186	1644	900	175	90	26	9	6	0	3	0	
 2021-12-30	2021-12-26	4950	1568	1004	146	67	27	12	9	0	3	0	
 2021-12-23	2021-12-19	6903	2423	1509	204	110	45	16	12	0	4	0	
