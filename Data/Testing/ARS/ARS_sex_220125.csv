@@ -1,0 +1,296 @@
+Datenquelle: 76 Labore die freiwillig an laborbasierter Surveillance SARS-CoV-2 teilnehmen ( keine Vollerfassung/je nach Stratum unterschiedliche Repräsentativität und Abdeckung ). Datenstand: 25.01.2022. Für mehr Informationen und Wochenberichte: https://ars.rki.de/Content/COVID19/Main.aspx;;;;
+Datengrundlage für Abb. 5 aus dem Wochenbericht - Es werden Daten zur Anzahl der getesteten Personen dargestellt.;;;;
+;;;;
+;;;;
+Geschlecht;Jahr KW Entnahme;KW Entnahme;Anzahl Gesamt;Anteil positiv
+Männlich;2020;12;55600;0.096
+Weiblich;2020;12;57200;0.066
+Nicht zugeordnet;2020;12;34700;0.082
+Männlich;2020;13;47300;0.113
+Weiblich;2020;13;56600;0.083
+Nicht zugeordnet;2020;13;37600;0.102
+Männlich;2020;14;50800;0.102
+Weiblich;2020;14;69600;0.087
+Nicht zugeordnet;2020;14;35900;0.101
+Männlich;2020;15;46200;0.085
+Weiblich;2020;15;66600;0.073
+Nicht zugeordnet;2020;15;31400;0.087
+Männlich;2020;16;41600;0.067
+Weiblich;2020;16;58500;0.059
+Nicht zugeordnet;2020;16;25300;0.072
+Männlich;2020;17;48700;0.045
+Weiblich;2020;17;66600;0.044
+Nicht zugeordnet;2020;17;26400;0.056
+Männlich;2020;18;48400;0.032
+Weiblich;2020;18;62000;0.031
+Nicht zugeordnet;2020;18;26600;0.042
+Männlich;2020;19;61600;0.021
+Weiblich;2020;19;75200;0.021
+Nicht zugeordnet;2020;19;30900;0.026
+Männlich;2020;20;67800;0.016
+Weiblich;2020;20;80600;0.013
+Nicht zugeordnet;2020;20;31800;0.022
+Männlich;2020;21;59300;0.012
+Weiblich;2020;21;69400;0.012
+Nicht zugeordnet;2020;21;26600;0.018
+Männlich;2020;22;68400;0.009
+Weiblich;2020;22;76400;0.009
+Nicht zugeordnet;2020;22;31500;0.013
+Männlich;2020;23;60100;0.007
+Weiblich;2020;23;65000;0.008
+Nicht zugeordnet;2020;23;26100;0.01
+Männlich;2020;24;58800;0.007
+Weiblich;2020;24;64700;0.006
+Nicht zugeordnet;2020;24;25000;0.01
+Männlich;2020;25;71500;0.008
+Weiblich;2020;25;76400;0.007
+Nicht zugeordnet;2020;25;29500;0.01
+Männlich;2020;26;83900;0.005
+Weiblich;2020;26;89600;0.005
+Nicht zugeordnet;2020;26;32800;0.01
+Männlich;2020;27;89400;0.005
+Weiblich;2020;27;95600;0.004
+Nicht zugeordnet;2020;27;34600;0.007
+Männlich;2020;28;97500;0.005
+Weiblich;2020;28;105800;0.004
+Nicht zugeordnet;2020;28;37000;0.008
+Männlich;2020;29;103500;0.006
+Weiblich;2020;29;114100;0.005
+Nicht zugeordnet;2020;29;38100;0.009
+Männlich;2020;30;100800;0.006
+Weiblich;2020;30;108200;0.006
+Nicht zugeordnet;2020;30;42300;0.009
+Männlich;2020;31;104300;0.008
+Weiblich;2020;31;109600;0.007
+Nicht zugeordnet;2020;31;47300;0.01
+Männlich;2020;32;120300;0.009
+Weiblich;2020;32;126900;0.009
+Nicht zugeordnet;2020;32;53500;0.011
+Männlich;2020;33;133000;0.01
+Weiblich;2020;33;150700;0.008
+Nicht zugeordnet;2020;33;57500;0.012
+Männlich;2020;34;150700;0.009
+Weiblich;2020;34;178700;0.008
+Nicht zugeordnet;2020;34;64900;0.01
+Männlich;2020;35;167900;0.008
+Weiblich;2020;35;208400;0.006
+Nicht zugeordnet;2020;35;73100;0.007
+Männlich;2020;36;158100;0.008
+Weiblich;2020;36;204700;0.006
+Nicht zugeordnet;2020;36;73600;0.008
+Männlich;2020;37;166600;0.01
+Weiblich;2020;37;220200;0.007
+Nicht zugeordnet;2020;37;77000;0.009
+Männlich;2020;38;165800;0.012
+Weiblich;2020;38;204800;0.01
+Nicht zugeordnet;2020;38;74600;0.012
+Männlich;2020;39;178600;0.012
+Weiblich;2020;39;225000;0.01
+Nicht zugeordnet;2020;39;79800;0.012
+Männlich;2020;40;170100;0.015
+Weiblich;2020;40;206800;0.013
+Nicht zugeordnet;2020;40;72000;0.017
+Männlich;2020;41;195600;0.023
+Weiblich;2020;41;234100;0.019
+Nicht zugeordnet;2020;41;85400;0.025
+Männlich;2020;42;196300;0.036
+Weiblich;2020;42;219800;0.033
+Nicht zugeordnet;2020;42;83300;0.039
+Männlich;2020;43;233600;0.059
+Weiblich;2020;43;266600;0.054
+Nicht zugeordnet;2020;43;89500;0.06
+Männlich;2020;44;262000;0.076
+Weiblich;2020;44;310400;0.068
+Nicht zugeordnet;2020;44;102600;0.076
+Männlich;2020;45;242100;0.084
+Weiblich;2020;45;298100;0.074
+Nicht zugeordnet;2020;45;99400;0.083
+Männlich;2020;46;205900;0.095
+Weiblich;2020;46;262200;0.084
+Nicht zugeordnet;2020;46;86800;0.092
+Männlich;2020;47;206100;0.099
+Weiblich;2020;47;260900;0.091
+Nicht zugeordnet;2020;47;90000;0.091
+Männlich;2020;48;201800;0.098
+Weiblich;2020;48;265200;0.091
+Nicht zugeordnet;2020;48;87300;0.086
+Männlich;2020;49;197700;0.106
+Weiblich;2020;49;253300;0.102
+Nicht zugeordnet;2020;49;83300;0.094
+Männlich;2020;50;219800;0.117
+Weiblich;2020;50;284800;0.113
+Nicht zugeordnet;2020;50;90700;0.113
+Männlich;2020;51;235500;0.118
+Weiblich;2020;51;327900;0.109
+Nicht zugeordnet;2020;51;102800;0.104
+Männlich;2020;52;144100;0.142
+Weiblich;2020;52;202400;0.131
+Nicht zugeordnet;2020;52;66100;0.126
+Männlich;2020;53;114500;0.164
+Weiblich;2020;53;152800;0.159
+Nicht zugeordnet;2020;53;47100;0.165
+Männlich;2021;1;171900;0.137
+Weiblich;2021;1;217800;0.135
+Nicht zugeordnet;2021;1;69900;0.127
+Männlich;2021;2;173200;0.107
+Weiblich;2021;2;216500;0.106
+Nicht zugeordnet;2021;2;67200;0.109
+Männlich;2021;3;160700;0.1
+Weiblich;2021;3;203100;0.097
+Nicht zugeordnet;2021;3;65200;0.103
+Männlich;2021;4;156900;0.09
+Weiblich;2021;4;199400;0.085
+Nicht zugeordnet;2021;4;64800;0.093
+Männlich;2021;5;156000;0.076
+Weiblich;2021;5;196300;0.071
+Nicht zugeordnet;2021;5;68300;0.08
+Männlich;2021;6;149600;0.067
+Weiblich;2021;6;184700;0.06
+Nicht zugeordnet;2021;6;65800;0.071
+Männlich;2021;7;155400;0.064
+Weiblich;2021;7;189500;0.055
+Nicht zugeordnet;2021;7;67400;0.068
+Männlich;2021;8;160600;0.067
+Weiblich;2021;8;195300;0.057
+Nicht zugeordnet;2021;8;71000;0.072
+Männlich;2021;9;171300;0.065
+Weiblich;2021;9;201600;0.055
+Nicht zugeordnet;2021;9;73300;0.072
+Männlich;2021;10;180000;0.071
+Weiblich;2021;10;214600;0.06
+Nicht zugeordnet;2021;10;74300;0.08
+Männlich;2021;11;199200;0.084
+Weiblich;2021;11;232600;0.071
+Nicht zugeordnet;2021;11;83500;0.084
+Männlich;2021;12;213200;0.098
+Weiblich;2021;12;249000;0.083
+Nicht zugeordnet;2021;12;85100;0.099
+Männlich;2021;13;171500;0.115
+Weiblich;2021;13;197700;0.097
+Nicht zugeordnet;2021;13;67800;0.12
+Männlich;2021;14;171600;0.127
+Weiblich;2021;14;194100;0.109
+Nicht zugeordnet;2021;14;69000;0.138
+Männlich;2021;15;199600;0.128
+Weiblich;2021;15;224000;0.109
+Nicht zugeordnet;2021;15;82600;0.132
+Männlich;2021;16;203200;0.133
+Weiblich;2021;16;227300;0.112
+Nicht zugeordnet;2021;16;81900;0.137
+Männlich;2021;17;199000;0.121
+Weiblich;2021;17;221900;0.101
+Nicht zugeordnet;2021;17;75800;0.127
+Männlich;2021;18;185800;0.11
+Weiblich;2021;18;206400;0.091
+Nicht zugeordnet;2021;18;68900;0.114
+Männlich;2021;19;149800;0.095
+Weiblich;2021;19;167000;0.082
+Nicht zugeordnet;2021;19;55800;0.1
+Männlich;2021;20;163800;0.067
+Weiblich;2021;20;182800;0.059
+Nicht zugeordnet;2021;20;56100;0.077
+Männlich;2021;21;130600;0.048
+Weiblich;2021;21;143600;0.043
+Nicht zugeordnet;2021;21;47100;0.055
+Männlich;2021;22;120300;0.035
+Weiblich;2021;22;130900;0.031
+Nicht zugeordnet;2021;22;42900;0.039
+Männlich;2021;23;112300;0.025
+Weiblich;2021;23;120600;0.023
+Nicht zugeordnet;2021;23;43600;0.029
+Männlich;2021;24;109700;0.015
+Weiblich;2021;24;116700;0.013
+Nicht zugeordnet;2021;24;38400;0.02
+Männlich;2021;25;106400;0.011
+Weiblich;2021;25;114300;0.009
+Nicht zugeordnet;2021;25;36500;0.014
+Männlich;2021;26;103900;0.008
+Weiblich;2021;26;112800;0.006
+Nicht zugeordnet;2021;26;34600;0.011
+Männlich;2021;27;99500;0.01
+Weiblich;2021;27;110000;0.008
+Nicht zugeordnet;2021;27;31900;0.013
+Männlich;2021;28;102700;0.015
+Weiblich;2021;28;113300;0.012
+Nicht zugeordnet;2021;28;31600;0.018
+Männlich;2021;29;99400;0.019
+Weiblich;2021;29;109600;0.016
+Nicht zugeordnet;2021;29;31200;0.028
+Männlich;2021;30;96700;0.026
+Weiblich;2021;30;107200;0.022
+Nicht zugeordnet;2021;30;30700;0.041
+Männlich;2021;31;92800;0.034
+Weiblich;2021;31;104000;0.029
+Nicht zugeordnet;2021;31;31200;0.061
+Männlich;2021;32;94500;0.053
+Weiblich;2021;32;104200;0.044
+Nicht zugeordnet;2021;32;32600;0.087
+Männlich;2021;33;105200;0.079
+Weiblich;2021;33;114400;0.069
+Nicht zugeordnet;2021;33;40200;0.108
+Männlich;2021;34;116800;0.093
+Weiblich;2021;34;127000;0.081
+Nicht zugeordnet;2021;34;50200;0.11
+Männlich;2021;35;130200;0.098
+Weiblich;2021;35;142700;0.088
+Nicht zugeordnet;2021;35;52700;0.11
+Männlich;2021;36;138700;0.09
+Weiblich;2021;36;152100;0.081
+Nicht zugeordnet;2021;36;54600;0.098
+Männlich;2021;37;133600;0.084
+Weiblich;2021;37;146600;0.075
+Nicht zugeordnet;2021;37;50200;0.085
+Männlich;2021;38;133900;0.07
+Weiblich;2021;38;149500;0.064
+Nicht zugeordnet;2021;38;48500;0.08
+Männlich;2021;39;134400;0.071
+Weiblich;2021;39;148800;0.066
+Nicht zugeordnet;2021;39;48100;0.076
+Männlich;2021;40;140200;0.072
+Weiblich;2021;40;157900;0.065
+Nicht zugeordnet;2021;40;47200;0.077
+Männlich;2021;41;137100;0.083
+Weiblich;2021;41;159400;0.075
+Nicht zugeordnet;2021;41;48300;0.083
+Männlich;2021;42;150100;0.113
+Weiblich;2021;42;175000;0.101
+Nicht zugeordnet;2021;42;53800;0.107
+Männlich;2021;43;175800;0.137
+Weiblich;2021;43;203000;0.127
+Nicht zugeordnet;2021;43;63800;0.118
+Männlich;2021;44;184100;0.172
+Weiblich;2021;44;212000;0.156
+Nicht zugeordnet;2021;44;61400;0.151
+Männlich;2021;45;251300;0.198
+Weiblich;2021;45;293500;0.176
+Nicht zugeordnet;2021;45;87000;0.16
+Männlich;2021;46;289100;0.227
+Weiblich;2021;46;336900;0.204
+Nicht zugeordnet;2021;46;97700;0.176
+Männlich;2021;47;304100;0.242
+Weiblich;2021;47;354000;0.215
+Nicht zugeordnet;2021;47;99300;0.189
+Männlich;2021;48;293200;0.237
+Weiblich;2021;48;338800;0.211
+Nicht zugeordnet;2021;48;97100;0.186
+Männlich;2021;49;258400;0.227
+Weiblich;2021;49;295100;0.205
+Nicht zugeordnet;2021;49;90800;0.181
+Männlich;2021;50;224700;0.205
+Weiblich;2021;50;256600;0.185
+Nicht zugeordnet;2021;50;82700;0.173
+Männlich;2021;51;166500;0.192
+Weiblich;2021;51;196700;0.168
+Nicht zugeordnet;2021;51;61600;0.17
+Männlich;2021;52;131100;0.238
+Weiblich;2021;52;166800;0.201
+Nicht zugeordnet;2021;52;53900;0.221
+Männlich;2022;1;205800;0.235
+Weiblich;2022;1;251500;0.206
+Nicht zugeordnet;2022;1;84100;0.243
+Männlich;2022;2;285200;0.261
+Weiblich;2022;2;336800;0.233
+Nicht zugeordnet;2022;2;123200;0.273
+Männlich;2022;3;333500;0.354
+Weiblich;2022;3;397200;0.322
+Nicht zugeordnet;2022;3;142500;0.33
