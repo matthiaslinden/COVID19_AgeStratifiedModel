@@ -2,6 +2,7 @@
 # newly hospitalized patients, total_cases = symptomatic
 # If Meldedatum is within 1 week range
 date	end	total_cases	unvax_cases	vax_cases	total_hospital	unvax_hospital	vax_hospital	total_ICU	unvax_ICU	unvax_ICU_risk	vax_ICU	vax_ICU_risk	comment
+2022-01-27	2022-01-23	3416	908	1283	73	30	18	5	5	0	0	0	
 2022-01-20	2022-01-16	2461	721	842	56	24	7	3	3	0	0	0	
 2022-01-13	2022-01-09	3958	1218	969	101	46	23	8	7	0	1	0	
 2022-01-06	2022-01-02	4186	1644	900	175	90	26	9	6	0	3	0	
