@@ -272,7 +272,10 @@ date	status	day0	day-1	day-2	day-3	...
 2022-02-10	hospital_patients	630	600	555	501	466	454	457	437	419	419	401	361	366	382
 2022-02-10	ICU_patients	144	147	149	143	139	135	138	134	148	154	174	167	168	192
 2022-02-10	7-day_hospitalizations_byMeldedatum	5,1	5,82	5,99	5,67	5,72	5,84	5,79	5,55	5,5	5,27	5,3	5,27	5,27	5,3
+2022-02-11	hospital_patients	635	630	600	555	501	466	454	457	437	419	419	401	361	366
+2022-02-11	ICU_patients	141	144	147	149	143	139	135	138	134	148	154	174	167	168
+2022-02-11	7-day_hospitalizations_byMeldedatum	5,05	5,87	6,31	6,33	5,84	5,87	5,97	5,89	5,6	5,52	5,27	5,3	5,27	5,27
 
-2022-02-0x	hospital_patients	
-2022-02-0x	ICU_patients	
-2022-02-0x	7-day_hospitalizations_byMeldedatum	
+2022-02-1x	hospital_patients	
+2022-02-1x	ICU_patients	
+2022-02-1x	7-day_hospitalizations_byMeldedatum	
