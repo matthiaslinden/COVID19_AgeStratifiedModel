@@ -15,8 +15,8 @@ def fetch(d,monday):
     startdates["_faelle_alter_geschlecht"] = datetime.date(2020,1,1)
     startdates["_faelle_alter_geschlecht_tote"] = datetime.date(2020,1,1)
     startdates["_krankheitsschwere"] = datetime.date(2021,9,6)
-    startdates["_variantenLK_MW"] = datetime.date(2021,10,11)
-    startdates["_variantenLK"] = datetime.date(2021,5,1)
+#    startdates["_variantenLK_MW"] = datetime.date(2021,10,11)
+ #   startdates["_variantenLK"] = datetime.date(2021,5,1)
     
     for i,ft in enumerate(startdates.keys()):
         f = d+ft+".csv"
