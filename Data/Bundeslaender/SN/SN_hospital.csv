@@ -296,7 +296,13 @@ date	status	day0	day-1	day-2	day-3	...
 2022-02-18	hospital_patients	782	714	715	711	679	620	613	635	630	600	555	501	466	454
 2022-02-18	ICU_patients	151	152	155	155	151	153	133	141	144	147	149	143	139	135
 2022-02-18	7-day_hospitalizations_byMeldedatum	6,53	7,47	7,72	7,99	8,08	7,76	7,57	7,25	7,2	7,1	7,05	6,46	6,43	6,53
+2022-02-19	hospital_patients	725	782	714	715	711	679	620	613	635	630	600	555	501	466
+2022-02-19	ICU_patients	140	151	152	155	155	151	153	133	141	144	147	149	143	139
+2022-02-19	7-day_hospitalizations_byMeldedatum	6,46	7,49	8,01	8,08	8,43	8,43	8,11	7,86	7,52	7,39	7,3	7,2	6,58	6,53
+2022-02-20	hospital_patients	736	725	782	714	715	711	679	620	613	635	630	600	555	501
+2022-02-20	ICU_patients	138	140	151	152	155	155	151	153	133	141	144	147	149	143
+2022-02-20	7-day_hospitalizations_byMeldedatum	6,16	6,8	7,72	8,11	8,16	8,5	8,5	8,18	7,94	7,57	7,44	7,32	7,22	6,58
 
-2022-02-1x	hospital_patients	
-2022-02-1x	ICU_patients	
-2022-02-1x	7-day_hospitalizations_byMeldedatum	
+2022-02-2x	hospital_patients	
+2022-02-2x	ICU_patients	
+2022-02-2x	7-day_hospitalizations_byMeldedatum	
