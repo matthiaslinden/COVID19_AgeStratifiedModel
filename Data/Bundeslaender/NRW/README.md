@@ -1,5 +1,12 @@
 # NRW data
+https://www.lzg.nrw.de/inf_schutz/corona_meldelage/index.html
 
+## Dashboard
+https://www.giscloud.nrw.de/corona-dashboard.html
+
+
+* Hospital-patients in normal,ICU,ventilation
+* Tests WITH POC testing
 
 ## Dortmund-data
 The city of Dortmund has an extensive daily update, with exact age of deaths
