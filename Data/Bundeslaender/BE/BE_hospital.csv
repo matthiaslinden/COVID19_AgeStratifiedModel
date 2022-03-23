@@ -1,4 +1,6 @@
-date	"normal hospital"	ICU	ventilated ECMO	"cum released"	"cum deaths"
+date	"normal hospital"	ICU	ventilated ECMO	"cum released"	"cum deaths incl. ex-Berlin"
+2022-03-22	876	116	69	13	30092	5516
+2022-03-21	855	113	59	14	30183	5511
 2022-03-20	814	116	59	15	29932	5490
 2022-03-19	821	116	62	15	29924	5488
 2022-03-18	842	119	65	15	29883	5487
