@@ -4,6 +4,7 @@ loc=${1:-"."}
 echo $loc
 
 git update-index $loc/SH/SH_hospital.csv
+git update-index $loc/SN/SN_hospital.csv
 git update-index $loc/BY/BY_hospital_*.csv
 
 git update-index $loc/NDS/NDS_IVENA.csv
